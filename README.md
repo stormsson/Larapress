@@ -7,8 +7,8 @@ To use it, simply copy it in your plugins directory and enable it in Wordpress p
 ```php
 <?php
 
-$app['router']->get('/sample-route', 'TestController@index');
-$app['router']->post('/sample-route', 'TestController@othermethod');
+$this->app['router']->get('/sample-route', 'TestController@index');
+$this->app['router']->post('/sample-route', 'TestController@othermethod');
 ```
 
 You can also use closure-style routes
@@ -16,7 +16,7 @@ You can also use closure-style routes
 ```php
 <?php
 
-$app['router']->get('sample-route', function () {
+$this->app['router']->get('sample-route', function () {
     return "Hello!";
 });
 ```
@@ -26,7 +26,7 @@ Route parameters are supported, in the standard Laravel way
 ```php
 <?php
 
-$app['router']->get('/hello/{name}', 'TestController@hello');
+$this->app['router']->get('/hello/{name}', 'TestController@hello');
 ```
 
 ## Using controllers
@@ -71,6 +71,28 @@ class ProvaController extends Illuminate\Routing\Controller {
     }
 
 }
+```
+
+## Rendering a controller from a Wordpress Template
+
+Since the $Larapress object is available in the templates,it is possible to render the response of a Laravel controller from a Wordpress template:
+
+```php
+<?php
+
+// /wp-content/themes/your_theme/single.php
+
+echo $Larapress->render('TestController@hello', array('name'=>'Mix'));
+
+// /wp-content/themes/your_theme/controllers/TestController.php
+class TestController extends Illuminate\Routing\Controller
+{
+
+    public function hello($name)
+    {
+        return "Hello, " . $name;
+    }
+
 ```
 
 ## Database support
